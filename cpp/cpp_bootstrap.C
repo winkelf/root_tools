@@ -11,37 +11,21 @@ using namespace std;
 void BootstrapAndSave(const char* inputFilename, const char* outputFilename) {
   // Open the input file and retrieve the tree
   TFile *inputFile = TFile::Open(inputFilename, "READ");
-  TTree *inputTree = (TTree*)inputFile->Get("treeName");
+  TTree *inputTree = (TTree*)inputFile->Get("analysis");
 
   // Prepare the output file and tree
   TFile *outputFile = TFile::Open(outputFilename, "RECREATE");
   TTree *outputTree = inputTree->CloneTree(0);  // Create an empty clone of the input tree
 
   // Define the branches
-  unsigned int       RunNumber;
-  unsigned long long EventNumber;
-  float              mcEventWeight;
   vector<float> *RecoJetEta  = nullptr;
   vector<float> *RecoJetPhi  = nullptr;
   vector<float> *RecoJetPt   = nullptr;
-  vector<float> *RecoJetE    = nullptr;
-  vector<float> *TruthJetEta = nullptr;
-  vector<float> *TruthJetPhi = nullptr;
-  vector<float> *TruthJetPt  = nullptr;
-  vector<float> *TruthJetE   = nullptr;
 
   // Set branch addresses
-  inputTree->SetBranchAddress("RunNumber",     &RunNumber);
-  inputTree->SetBranchAddress("EventNumber",   &EventNumber);
-  inputTree->SetBranchAddress("mcEventWeight", &mcEventWeight);
-  inputTree->SetBranchAddress("RecoJetEta",    &RecoJetEta);
-  inputTree->SetBranchAddress("RecoJetPhi",    &RecoJetPhi);
-  inputTree->SetBranchAddress("RecoJetPt",     &RecoJetPt);
-  inputTree->SetBranchAddress("RecoJetE",      &RecoJetE);
-  inputTree->SetBranchAddress("TruthJetEta",   &TruthJetEta);
-  inputTree->SetBranchAddress("TruthJetPhi",   &TruthJetPhi);
-  inputTree->SetBranchAddress("TruthJetPt",    &TruthJetPt);
-  inputTree->SetBranchAddress("TruthJetE",     &TruthJetE);
+  inputTree->SetBranchAddress("CaloJet_pt" ,    &RecoJetEta);
+  inputTree->SetBranchAddress("CaloJet_eta",    &RecoJetPhi);
+  inputTree->SetBranchAddress("CaloJet_phi",    &RecoJetPt);
 
   // Create a random number generator
   TRandom randGen;
@@ -69,7 +53,7 @@ void BootstrapAndSave(const char* inputFilename, const char* outputFilename) {
 }
 
 int cpp_bootstrap() {
-  const char* inputFilename  = "input.root";
+  const char* inputFilename  = "mc20_13TeV.root";
   const char* outputFilename = "output_bootstrapped.root";
   BootstrapAndSave(inputFilename, outputFilename);
   return 0;
