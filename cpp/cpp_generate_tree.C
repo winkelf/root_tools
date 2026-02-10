@@ -6,6 +6,8 @@
 #include <algorithm>
 
 using namespace std;
+    
+struct Jet { float pt, eta, phi; };
 
 void cpp_generate_tree() {
 
@@ -32,7 +34,7 @@ void cpp_generate_tree() {
 
     int nJets = rng.Integer(3) + 2; // 2–4 jets
 
-    struct Jet { float pt, eta, phi; };
+    //struct Jet { float pt, eta, phi; };
     vector<Jet> jets;
 
     for (int j = 0; j < nJets; ++j) {
